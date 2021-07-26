@@ -1,3 +1,4 @@
+from flask_login import login_user, logout_user, login_required
 from flask import Blueprint,render_template,redirect,url_for,request,flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user
@@ -54,5 +55,10 @@ def signup_post():
     return redirect(url_for('auth.login'))
     
 @auth.route('/logout')
+#logout_user function created and make changes like if u dont have an account but trying to access the logout page it wont work i have rectified it...
+@login_required
 def logout():
-    return 'logout'
+    logout_user()
+    #route for logging out by above function...
+    return redirect(url_for('main.index'))
+    
