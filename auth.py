@@ -7,7 +7,7 @@ from .models import User
 
 auth = Blueprint('auth', 'auth',url_prefix="")
 
-@auth.route('/login',methods=['POST'])
+@auth.route('/login',methods=['GET'])
 def login():
     
     print("Login")

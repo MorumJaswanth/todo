@@ -1,10 +1,9 @@
-{% extends "base.html" %}
+<{% extends "base.html" %}
 
 {% block content %}
-
 	<h1>Time to setup the task!!<h1>
 	<p>Enter the details of the task<p>
-	<form action="{{url_for('todo.addnewtopic')}}" >
+	<form action="{{url_for('todo.addnewtopic')}}" method="POST">
 		<label for="taskname">Title:</label>
 		<input type="text" id="taskname" name="taskname"><br><br>
 		<label for="taskdescription">Description:</label>

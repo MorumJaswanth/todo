@@ -6,6 +6,7 @@
 		<h1> Hello {{name}}!! Here's your List</h1>
 	</span>
 	<a href="{{url_for('todo.addnewtopic')}}"><button type="submit">Add new task</button></a>
+	
 	<div class="table-responsive">
 		<table class="table">
 			<tr>
@@ -14,7 +15,6 @@
 				<th> DEADLINE
 				<th> TIME
 				<th> STATUS
-				
 			</tr>
 			{%for tid,taskname,taskdescription,deadline,deadline_time,status in tasks%}	
 			<tr>
@@ -29,6 +29,7 @@
 			{%endfor%}
 		</table>
 	</div>
+	<div>
 	<form action="{{url_for('todo.sort')}}" method="POST">
 		<label for="sd">Start date:</label>
 		<input type="date" id="sd" name="sd">
@@ -39,8 +40,7 @@
 		<label for="et">End Time of the Day:</label>
 		<input type="time" id="et" name="et" ><br><br>
 		<button type="submit">Filter the tasks</button>
-	</form>
+	</form>>
 	</div>
-	
 </body>
 {%endblock%}
