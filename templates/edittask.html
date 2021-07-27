@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<h1>Editing {{taskname}}</h1>
+	<p>Enter the details of the task</p>
+	<form action="{{url_for('todo.edit',tid=tid)}}" method="POST">
+		<label for="taskname">Title:</label>
+		<input type="text" id="taskname" name="taskname" value="{{taskname}}"><br><br>
+		<label for="taskdescription">Description:</label>
+		<textarea type="text" id="taskdescription" style="height:350px; width:100%;" name="taskdescription">{{taskdescription}}</textarea><br><br>
+		<label for="deadline">Deadline date:</label>
+		<input type="date" id="deadline" name="deadline" value="{{deadline}}">
+		<label for="deadline_time">Time:</label>
+		<input type="time" id="deadline_time" name="deadline_time" value="{{deadline_time}}"><br><br>
+		<label class="form-check-label" for="status" > Mark as Done </label>
+		<input type="checkbox" id="status" name="status" value="done"
+		<button type="submit">Update the task</button>
+	</form>
+	<a href="{{url_for('todo.dashboard')}}"><button>Cancel</button></a>
+{%endblock%}
