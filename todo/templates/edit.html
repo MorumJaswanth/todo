@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+	<h1>Time to setup the task!!<h1>
+	<p>Enter the details of the task<p>
+	<form action="{{url_for('todo.addnewtopic')}}" >
+		<label for="taskname">Title:</label>
+		<input type="text" id="taskname" name="taskname"><br><br>
+		<label for="taskdescription">Description:</label>
+		<textarea type="text" id="taskdescription" style="height:350px; width:100%;" name="taskdescription"></textarea><br><br>
+		<label for="deadline">Deadline date:</label>
+		<input type="date" id="deadline" name="deadline">
+		<label for="deadline_time">Time:</label>
+		<input type="time" id="deadline_time" name="deadline_time"><br><br>
+		<button type="submit">Add the task</button>
+	</form>
+	<a href="{{url_for('todo.dashboard')}}"><button>Cancel</button></a>
+{%endblock%}
