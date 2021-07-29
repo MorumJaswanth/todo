@@ -25,7 +25,7 @@ def init_db():
     sql_code = f.read().decode("ascii")
     cur = db.cursor()
     cur.executescript(sql_code)
-    cur.execute("INSERT into userlist(name,username,email,pswrd) values ('mj','mj','mj@mail.com','mj');")
+    cur.execute("INSERT into userlist(name,username,email,pswrd) values ('jo','jo','jo@gmail.com','jo');")
     cur.execute("INSERT into user_(taskname,taskdescription,deadline,deadline_time,status,userid) values ('First task','sample_task_description',20210724,1549,'pending',1);")
     cur.close()
     db.commit()

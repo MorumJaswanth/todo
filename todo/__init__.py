@@ -38,9 +38,9 @@ def create_app(test_config=None):
         cursor=conn.cursor()
         cursor.execute(f"select l.email,l.id from userlist l where id={userid};")
         ret=cursor.fetchall()
-        user=User(userid)
+        #user=User(userid)
         #return True
-        return User(userid)
+        return userid
     # blueprint for auth routes in app
     from . import auth
     app.register_blueprint(auth.auth)

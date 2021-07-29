@@ -24,10 +24,10 @@ bp = Blueprint("todo", "todo", url_prefix="")
             # return redirect(url_for("todo.dashboard"), 302)
     # if request.method=="GET":
         # return render_template('index.html')
-        
-        
+
+
 @bp.route("/page")
-@login_required
+
 def dashboard():
     oby=["taskname","taskdescription","deadline","deadline_time","status"]
     uid=session.get("user_id")
@@ -37,11 +37,18 @@ def dashboard():
     tasks=cursor.fetchall()
     cursor.execute(f"select l.name from userlist l WHERE l.id={uid};")
     name=cursor.fetchone()[0]
-    return render_template('todo.html',tasks=tasks,name=name)
-    return (f"MF af{otpt}")
+    cursor.execute(f"SELECT COUNT (u.id) FROM user_ u,userlist l WHERE u.deadline = CURRENT_DATE AND u.userid=l.id AND l.id={uid};")
+    today=cursor.fetchone()[0]
+    cursor.execute(f"SELECT COUNT (u.id) FROM user_ u,userlist l WHERE u.deadline BETWEEN CURRENT_DATE AND CURRENT_DATE + INTEGER'7' AND u.userid=l.id AND l.id={uid};")
+    thisweek=cursor.fetchone()[0]
+    cursor.execute(f"SELECT COUNT (u.id) FROM user_ u,userlist l WHERE u.deadline < CURRENT_DATE AND u.userid=l.id AND l.id={uid};")
+    overdue=cursor.fetchone()[0]
+    return render_template('todo.html',tasks=tasks,name=name,today=today,thisweek=thisweek,overdue=overdue)
+    # return (f"MF af{otpt}")
 
+   
 @bp.route("/addnewtopic",methods=["GET","POST"])
-@login_required 
+
 def addnewtopic():
     if request.method=="GET":
         return render_template('edit.html')
@@ -59,7 +66,7 @@ def addnewtopic():
  
  
 @bp.route("/<tid>/edit",methods=['GET','POST'])
-@login_required
+
 def edit(tid):
     conn=db.get_db()
     cursor=conn.cursor()
@@ -83,7 +90,7 @@ def edit(tid):
         #return (f"{status}")
 
 @bp.route("/<tid>/delete")
-@login_required
+
 def delete(tid):
     conn=db.get_db()
     cursor=conn.cursor()
@@ -92,7 +99,7 @@ def delete(tid):
     return redirect(url_for("todo.dashboard"),302)
 
 @bp.route("/sort",methods=['GET','POST'])
-@login_required
+
 def sort():
     if request.method=="POST":
         sd=request.form.get('sd')
