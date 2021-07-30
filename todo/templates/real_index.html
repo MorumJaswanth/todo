@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+	<title>ToDo Manager - SignUp or LogIn </title>
+	<meta charset = 'utf-8'>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+	<h1> Welcome to ToDo List Manager!!</h1>
+	<h2> Please sign in to access your account</h2>
+	<p> If you don't have an account, sign up now!!!</p>
+	<form action="{{url_for('todo.login')}}" method="POST">
+        <div class="container">   
+            <label>Email ID : </label>   
+            <input type="text" placeholder="Enter Email ID" name="email" required>  
+            <label>Password : </label>   
+            <input type="password" placeholder="Enter Password" name="password" required>  
+            <button type="submit">Login</button>   
+               
+        </div>   
+    </form>     
+</body>

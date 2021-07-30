@@ -1,20 +1,30 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<h1>Editing {{taskname}}</h1>
-	<p>Enter the details of the task</p>
+<div>
+	<h1 class="greeting">Editing {{taskname}}</h1>
+	<h4 style="text-align:left;"><strong>Enter the details of the task</strong></h4><br><br>
+	<div>
 	<form action="{{url_for('todo.edit',tid=tid)}}" method="POST">
-		<label for="taskname">Title:</label>
-		<input type="text" id="taskname" name="taskname" value="{{taskname}}"><br><br>
-		<label for="taskdescription">Description:</label>
-		<textarea type="text" id="taskdescription" style="height:350px; width:100%;" name="taskdescription">{{taskdescription}}</textarea><br><br>
-		<label for="deadline">Deadline date:</label>
-		<input type="date" id="deadline" name="deadline" value="{{deadline}}">
-		<label for="deadline_time">Time:</label>
-		<input type="time" id="deadline_time" name="deadline_time" value="{{deadline_time}}"><br><br>
-		<label class="form-check-label" for="status" > Mark as Done </label>
-		<input type="checkbox" id="status" name="status" value="done"
-		<button type="submit">Update the task</button>
-	</form>
-	<a href="{{url_for('todo.dashboard')}}"><button>Cancel</button></a>
+		<label class="form-label edit_title" style="float:left; font-weight:900;" for="taskname">Title:</label><br><br>
+		<input class="form-control" style="width:50%" type="text" id="taskname" name="taskname" value="{{taskname}}"><br><br>
+		<label class="form-label edit_title" style="float:left; font-weight:700;" for="taskdescription">Description:</label><br><br>
+		<textarea rows="10" id="taskdescription" class="form-control" type="text" style="height:350px; width:100%;" name="taskdescription">{{taskdescription}}</textarea><br><br>
+		<div>
+		<span style="float:left"><label class="form-label edit_title" style="float:left; font-weight:700;" for="deadline">Deadline date:</label><br><br>
+		<input class="form-control" type="date" style="width:200px" id="deadline" name="deadline" value="{{deadline}}"></span>
+		<span style="float:left"><label class="form-label edit_title" style="float:left; font-weight:700;" for="deadline_time">Time:</label><br><br>
+		<input class="form-control" type="time" style="width:200px" id="deadline_time" name="deadline_time" value="{{deadline_time}}"></span><br><br>
+		<label class="form-check-label" for="status" style="font-weight:700; color:black;">Mark as Done</label>
+		<input type="checkbox" id="status" name="status" value="done" class="form-check-input" id="flexCheckDefault">
+		<span style="display:block; float:right"><button type="submit" class="btn btn-primary">Update the task</button></form>
+		<form style="display:inline-block" action="{{url_for('todo.dashboard')}}">
+		<button type="submit" class="btn btn-primary">Cancel</button>
+		</form>
+	</span>
+	</div>
+</div>
 {%endblock%}
+
+
+

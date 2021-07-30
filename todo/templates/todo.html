@@ -1,46 +1,73 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-	<span>
-		<h1> Hello {{name}}!! Here's your List</h1>
-	</span>
-	<a href="{{url_for('todo.addnewtopic')}}"><button type="submit">Add new task</button></a>
+	
+	<div>
+		<span class="greeting">
+			<h1> Hello {{name}}!!!&#128521 Here are your Tasks.</h1>
+		</span>
+		{% with messages = get_flashed_messages(with_categories=true) %}
+		{% if messages %}
+			{% for category, message in messages %}
+    		<div class="notification is-{{category}}">
+        		{{ message }}
+    		</div>
+		{% endfor %}
+		{% endif %}
+		{% endwith %}
+		<form action="{{url_for('todo.addnewtopic')}}">
+			<button class="btn btn-primary btn-lg" style="float:right;" type="submit">Add new task</button>
+		</form>
+	<div style="text-align:left" class="info">
+		<span><h4>{{name}}, you have <br> &emsp; {{today}} jobs pending today;<br> &emsp; {{thisweek}} jobs pending this week;<br> &emsp; {{overdue}} jobs overdue.</h4></span>
+	</div>
 	
 	<div class="table-responsive">
 		<table class="table">
-			<tr>
-				<th> TASK NAME
-				<th> TASK DESCRIPTION		
-				<th> DEADLINE
-				<th> TIME
-				<th> STATUS
-			</tr>
+			<thread class="thead-dark">
+				<th> TASK NAME </th>
+				<th style="width:400px;"> TASK DESCRIPTION </th>		
+				<th> DEADLINE </th>
+				<th> TIME </th>
+				<th> STATUS </th>
+				<th></th>
+				<th></th>
+				<th></th>
+			</thread>
+			<tbody>
 			{%for tid,taskname,taskdescription,deadline,deadline_time,status in tasks%}	
 			<tr>
-				<td> {{taskname}}
-				<td> {{taskdescription}}
-				<td> {{deadline}}
-				<td> {{deadline_time}}
-				<td> {{status}}
-				<td> <a href="{{url_for('todo.edit',tid=tid)}}">Edit</a>
-				<td> <a href="{{url_for('todo.delete',tid=tid)}}">Delete Task</a>
+				<td class="cell_{{status}}"> {{taskname}}</td>
+				<td <div class="cell_{{status}}_description"> {{taskdescription}}</div></td>
+				<td class="cell_{{status}}"> {{deadline}}</td>
+				<td class="cell_{{status}}"> {{deadline_time}}</td>
+				<td class="cell_{{status}}"> {{status}}</td>
+				<td><form action="{{url_for('todo.edit',tid=tid)}}">
+					<button class="btn btn-warning btn-sm" type="submit">Edit Task</button>
+					</form></td>
+				<td><form action="{{url_for('todo.delete',tid=tid)}}">
+					<button class="btn btn-sm btn-danger" type="submit">Delete Task</button>
+					</form></td
 			</tr>
 			{%endfor%}
+			</tbody>
 		</table>
 	</div>
-	<div>
-	<form action="{{url_for('todo.sort')}}" method="POST">
-		<label for="sd">Start date:</label>
-		<input type="date" id="sd" name="sd">
-		<label for="ed">End date:</label>
-		<input type="date" id="ed" name="ed"><br><br>
-		<label for="st">Start Time of the Day:</label>
-		<input type="time" id="st" name="st">
-		<label for="et">End Time of the Day:</label>
-		<input type="time" id="et" name="et" ><br><br>
-		<button type="submit">Filter the tasks</button>
-	</form>>
+	<div> 	
+		<div style="text-align:left;display:block;font-weight:700;">Filter the tasks by:</div>
+		<div style=display:block;>
+			<form action="{{url_for('todo.sort')}}" method="POST">
+				<div style="display:inline-block;float:left"><label for="sd">Start date:</label>
+				<input type="date" id="sd" name="sd">
+				<label class="form-label"  for="ed">End date:</label>
+				<input type="date" id="ed" name="ed"><br><br>
+				<label class="form-label" for="st">Start Time of the Day:</label>
+				<input type="time" id="st" name="st">
+				<label class="form-label" for="et">End Time of the Day:</label>
+				<input type="time" id="et" name="et" ><br><br>
+				<button class="btn btn-primary btn-lg" style="margin-top:20px; float:right;" type="submit">Filter the tasks</button>
+			</form>>
+		</div>
 	</div>
 </body>
 {%endblock%}
