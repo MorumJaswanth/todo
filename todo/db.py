@@ -2,15 +2,16 @@ import datetime
 import random
 import psycopg2
 import click
+import os
+import urllib.parse as urlparse
 from flask import current_app,g
 from flask.cli import with_appcontext
 
 
 def get_db():
     if 'db' not in g:
-        dbname=current_app.config['DATABASE']
-        g.db=psycopg2.connect(f"dbname={dbname}")
-        
+    	dbname=current_app.config['DATABASE']
+    	g.db=psycopg2.connect(f"dbname={dbname}")    
     return g.db
 
 def close_db(e=None):
@@ -20,15 +21,13 @@ def close_db(e=None):
 
 def init_db():
     db = get_db()
-    
     f = current_app.open_resource("sql/initial.sql")
-    sql_code = f.read().decode("ascii")
+    sql_code = f.read()
+    click_echo(sql_code)
     cur = db.cursor()
-    cur.executescript(sql_code)
-    cur.execute("INSERT into userlist(name,username,email,pswrd) values ('jo','jo','jo@gmail.com','jo');")
-    cur.execute("INSERT into user_(taskname,taskdescription,deadline,deadline_time,status,userid) values ('First task','sample_task_description',20210724,1549,'pending',1);")
-    cur.close()
+    cur.execute(sql_code)
     db.commit()
+    cur.close()
     close_db()
     
     

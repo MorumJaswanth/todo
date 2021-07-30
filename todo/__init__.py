@@ -4,15 +4,14 @@ import sys
 from flask import Flask, render_template
 from flask_login import LoginManager
 from flask import g
-
 from . import db
+
 user_id = 0
 def create_app(test_config=None):
     app = Flask("todo")
     app.config.from_mapping(
         DATABASE="todo")
     app.config['SECRET_KEY'] = 'secret-key-goes-here'
-    #app.config['uid']=150
     if test_config is not None:
         app.config.update(test_config)
 

@@ -2,32 +2,15 @@ import datetime
 
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Blueprint
-from flask import render_template, request, redirect, url_for, jsonify, session
+from flask import render_template, request, redirect, url_for, jsonify, session,flash
 from flask import g
 from flask_login import login_user, logout_user, login_required, current_user, UserMixin
 from .models import User
-
 from . import db
 
 bp = Blueprint("todo", "todo", url_prefix="")
 
-# @bp.route("/",methods=["GET","POST"])
-# def login():
-    # conn=db.get_db()
-    # cursor=conn.cursor()
-    # if request.method=="POST":
-        # email=request.form.get('email')
-        # pswrd=request.form.get('pswrd')
-        # cursor.execute("select l.pswrd from userlist l where email=?",[email])
-        # cred=cursor.fetchone()[0]
-        # if pswrd==cred:
-            # return redirect(url_for("todo.dashboard"), 302)
-    # if request.method=="GET":
-        # return render_template('index.html')
-
-
 @bp.route("/page")
-
 def dashboard():
     oby=["taskname","taskdescription","deadline","deadline_time","status"]
     uid=session.get("user_id")
@@ -44,11 +27,10 @@ def dashboard():
     cursor.execute(f"SELECT COUNT (u.id) FROM user_ u,userlist l WHERE u.deadline < CURRENT_DATE AND u.userid=l.id AND l.id={uid};")
     overdue=cursor.fetchone()[0]
     return render_template('todo.html',tasks=tasks,name=name,today=today,thisweek=thisweek,overdue=overdue)
-    # return (f"MF af{otpt}")
+    
 
    
 @bp.route("/addnewtopic",methods=["GET","POST"])
-
 def addnewtopic():
     if request.method=="GET":
         return render_template('edit.html')
@@ -66,7 +48,6 @@ def addnewtopic():
  
  
 @bp.route("/<tid>/edit",methods=['GET','POST'])
-
 def edit(tid):
     conn=db.get_db()
     cursor=conn.cursor()
@@ -87,19 +68,18 @@ def edit(tid):
             cursor.execute("update user_ set taskname = %s, taskdescription=%s, deadline=%s, deadline_time=%s where id=%s", (taskname, taskdescription,deadline,deadline_time,tid))
         conn.commit()
         return redirect(url_for("todo.dashboard"),302)
-        #return (f"{status}")
+        
 
 @bp.route("/<tid>/delete")
-
 def delete(tid):
     conn=db.get_db()
     cursor=conn.cursor()
     cursor.execute(f"DELETE FROM user_ WHERE id={tid};")
     conn.commit()
+    flash('Successfully Deleted..','success')
     return redirect(url_for("todo.dashboard"),302)
 
 @bp.route("/sort",methods=['GET','POST'])
-
 def sort():
     if request.method=="POST":
         sd=request.form.get('sd')
@@ -115,4 +95,5 @@ def sort():
         cursor.execute(f"select l.name from userlist l;")
         name=cursor.fetchone()[0]
         return render_template('todo.html',tasks=tasks,name=name)
-        #return otpt
+
+        
