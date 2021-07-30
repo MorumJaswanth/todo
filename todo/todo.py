@@ -42,8 +42,9 @@ def addnewtopic():
         uid=session.get("user_id")
         conn=db.get_db()
         cursor=conn.cursor()
-        cursor.execute(f"INSERT into user_(taskname,taskdescription,deadline,deadline_time,status,userid) values ('{taskname}','{taskdescription}','{deadline}','{deadline_time}','pending',{uid})")
+        cursor.execute(f"INSERT into user_(taskname,taskdescription,deadline,deadline_time,status,userid) values ('{taskname}','{taskdescription}','{deadline}','{deadline_time}','pending','{uid}')")
         conn.commit()
+        flash('Added new task','success')
         return redirect(url_for("todo.dashboard"),302)
  
  
@@ -67,6 +68,7 @@ def edit(tid):
         else:
             cursor.execute("update user_ set taskname = %s, taskdescription=%s, deadline=%s, deadline_time=%s where id=%s", (taskname, taskdescription,deadline,deadline_time,tid))
         conn.commit()
+        flash('Edited successfully','success')
         return redirect(url_for("todo.dashboard"),302)
         
 
@@ -95,5 +97,56 @@ def sort():
         cursor.execute(f"select l.name from userlist l;")
         name=cursor.fetchone()[0]
         return render_template('todo.html',tasks=tasks,name=name)
+
+        
+@bp.route("/settings",methods=['GET','POST'])
+
+def change_settings():
+    conn=db.get_db()
+    cursor=conn.cursor()
+    uid=session.get("user_id")
+    if request.method=="POST":
+        email=request.form.get('email')
+        name=request.form.get('name')
+        username=request.form.get('username')
+        password=request.form.get('password')
+        cursor.execute(f"select l.pswrd from userlist l where l.id={uid};")
+        dbpassword=cursor.fetchone()[0]
+        if not check_password_hash(dbpassword,password):
+            flash('Please check your password and try again.')
+            return redirect(url_for('todo.change_settings'),302)
+        cursor.execute("update userlist set email = %s, name=%s, username=%s where id=%s", (email, name,username,uid))
+        conn.commit()
+        flash('Settings updated.','success')
+        return redirect(url_for("todo.dashboard"),302)
+    if request.method=="GET":
+        cursor.execute(f"select l.email, l.name, l.username from userlist l where l.id={uid};")
+        details=cursor.fetchone()
+        email, name, username = details
+        return render_template('settings.html',email=email,name=name, username=username)
+
+
+@bp.route("/password",methods=['GET','POST'])
+
+def change_password():
+    if request.method=="GET":
+        return render_template('password.html')
+    if request.method=="POST":
+        old=request.form.get('old')
+        new=request.form.get('new')
+        cnfrm=request.form.get('cnfrm')
+        conn=db.get_db()
+        cursor=conn.cursor()
+        uid=session.get("user_id")
+        cursor.execute(f"select l.pswrd from userlist l where l.id={uid};")
+        dbpassword=cursor.fetchone()[0]
+        if not check_password_hash(dbpassword,old):
+            flash('Please check your old password and try again.')
+            return redirect(url_for('todo.change_password'),302)
+        password = generate_password_hash(new, method='sha256')
+        cursor.execute("update userlist set pswrd = %s where id=%s", (password,uid))
+        conn.commit()
+        flash('Password updated.','success')
+        return redirect(url_for("todo.dashboard"),302)
 
         

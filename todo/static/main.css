@@ -1,0 +1,40 @@
+.Done {
+	background-color: lightgreen;
+}
+.cell_Done{
+	text-decoration: line-through;
+}
+.greeting{
+	text-align: left;
+}
+h1{
+	text-shadow: 4px 2px 4px red;
+}
+a{
+	text-decoration:none;
+}
+.cell_Done_description {
+    max-height:200px;
+    text-overflow: ellipsis;
+    overflow-y: auto;
+	text-decoration: line-through;
+}
+.cell_pending_description {
+	max-height:200px;
+    text-overflow: ellipsis;
+	overflow-y: auto;
+}
+.edit_title{
+	text-shadow: 4px 2px 4px blue;
+}
+
+.form-label{
+	font-weight:600;
+}
+.info{
+	text-shadow:4px 2px 4px orange;
+}
+.table_row{
+		height:40px;
+}
+tr:hover {background-color: #f5f5f5;}

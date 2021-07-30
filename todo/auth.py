@@ -82,7 +82,7 @@ def signup_post():
     
 @auth.route('/logout')
 #logout_user function created and make changes like if u dont have an account but trying to access the logout page it wont work i have rectified it...
-@login_required
+
 def logout():
     session.clear()
     logout_user()

@@ -4,7 +4,7 @@
 	
 	<div>
 		<span class="greeting">
-			<h1> Hello {{name}}!!!&#128521 Here are your Tasks.</h1>
+			<h1 style="color:purple"> Hello {{name}}!!! &#128521 Here are your Tasks.</h1>
 		</span>
 		{% with messages = get_flashed_messages(with_categories=true) %}
 		{% if messages %}
@@ -16,10 +16,10 @@
 		{% endif %}
 		{% endwith %}
 		<form action="{{url_for('todo.addnewtopic')}}">
-			<button class="btn btn-primary btn-lg" style="float:right;" type="submit">Add new task</button>
+			<button class="btn btn-primary btn-lg" style="float:right;background-color:#4CAF50;font-size:16px" type="submit">Add new task</button>
 		</form>
 	<div style="text-align:left" class="info">
-		<span><h4>{{name}}, you have <br> &emsp; {{today}} jobs pending today;<br> &emsp; {{thisweek}} jobs pending this week;<br> &emsp; {{overdue}} jobs overdue.</h4></span>
+		<span><h4 style="color:purple">{{name}}, you have <br> &emsp; {{today}} jobs pending today<br> &emsp; {{thisweek}} jobs pending this week<br> &emsp; {{overdue}} jobs overdue</h4></span>
 	</div>
 	
 	<div class="table-responsive">
@@ -54,10 +54,12 @@
 		</table>
 	</div>
 	<div> 	
-		<div style="text-align:left;display:block;font-weight:700;">Filter the tasks by:</div>
+		<div style="text-align:center;display:block;font-weight:700;color:purple;font-size:20px">Filter the tasks by</div>
+		<br>
 		<div style=display:block;>
 			<form action="{{url_for('todo.sort')}}" method="POST">
-				<div style="display:inline-block;float:left"><label for="sd">Start date:</label>
+				<div style="display:inline-block;float:center;color:purple">
+				<label class="form-label"  for="sd">Start date:</label>
 				<input type="date" id="sd" name="sd">
 				<label class="form-label"  for="ed">End date:</label>
 				<input type="date" id="ed" name="ed"><br><br>
@@ -65,8 +67,8 @@
 				<input type="time" id="st" name="st">
 				<label class="form-label" for="et">End Time of the Day:</label>
 				<input type="time" id="et" name="et" ><br><br>
-				<button class="btn btn-primary btn-lg" style="margin-top:20px; float:right;" type="submit">Filter the tasks</button>
-			</form>>
+				<button class="btn btn-primary btn-lg" style="margin-top:20px; float:center;background-color:#4CAF50;font-size:16px;" type="submit">Filter the tasks</button>
+			</form>
 		</div>
 	</div>
 </body>
