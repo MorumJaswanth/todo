@@ -12,11 +12,11 @@ bp = Blueprint("todo", "todo", url_prefix="")
 
 @bp.route("/page")
 def dashboard():
-    oby=["taskname","taskdescription","deadline","deadline_time","status"]
+    oby=["taskname","taskdescription","deadline","status"]
     uid=session.get("user_id")
     conn=db.get_db()
     cursor=conn.cursor()
-    cursor.execute(f"select DISTINCT u.id, u.taskname, u.taskdescription, u.deadline, u.deadline_time, u.status from user_ u, userlist l where u.userid=l.id and l.id={uid} order by u.deadline, u.deadline_time;")
+    cursor.execute(f"select DISTINCT u.id, u.taskname, u.taskdescription, u.deadline, u.status from user_ u, userlist l where u.userid=l.id and l.id={uid} order by u.deadline;")
     tasks=cursor.fetchall()
     cursor.execute(f"select l.name from userlist l WHERE l.id={uid};")
     name=cursor.fetchone()[0]
@@ -38,11 +38,11 @@ def addnewtopic():
         taskname=request.form.get('taskname')
         taskdescription=request.form.get('taskdescription')
         deadline=request.form.get('deadline')
-        deadline_time=request.form.get('deadline_time')
+        #deadline_time=request.form.get('deadline_time')
         uid=session.get("user_id")
         conn=db.get_db()
         cursor=conn.cursor()
-        cursor.execute(f"INSERT into user_(taskname,taskdescription,deadline,deadline_time,status,userid) values ('{taskname}','{taskdescription}','{deadline}','{deadline_time}','pending','{uid}')")
+        cursor.execute(f"INSERT into user_(taskname,taskdescription,deadline,status,userid) values ('{taskname}','{taskdescription}','{deadline}','pending','{uid}')")
         conn.commit()
         flash('Added new task','success')
         return redirect(url_for("todo.dashboard"),302)
@@ -53,20 +53,20 @@ def edit(tid):
     conn=db.get_db()
     cursor=conn.cursor()
     if request.method=="GET":
-        cursor.execute(f"select u.taskname, u.taskdescription, u.deadline, u.deadline_time from user_ u where u.id={tid}")
+        cursor.execute(f"select u.taskname, u.taskdescription, u.deadline from user_ u where u.id={tid}")
         details=cursor.fetchone()
-        taskname, taskdescription, deadline, deadline_time= details
-        return render_template('edittask.html', taskname=taskname, taskdescription=taskdescription, deadline=deadline, deadline_time=deadline_time,tid=tid)
+        taskname, taskdescription, deadline = details
+        return render_template('edittask.html', taskname=taskname, taskdescription=taskdescription, deadline=deadline, tid=tid)
     elif request.method=="POST":
         taskname=request.form.get('taskname')
         taskdescription=request.form.get('taskdescription')
         deadline=request.form.get('deadline')
-        deadline_time=request.form.get('deadline_time')
+        #deadline_time=request.form.get('deadline_time')
         status=request.form.get('status')
         if status=='done':
-            cursor.execute("update user_ set taskname = %s, taskdescription=%s, deadline=%s, deadline_time=%s, status='Done' where id=%s", (taskname, taskdescription,deadline,deadline_time,tid))
+            cursor.execute("update user_ set taskname = %s, taskdescription=%s, deadline=%s, status='Done' where id=%s", (taskname, taskdescription,deadline,tid))
         else:
-            cursor.execute("update user_ set taskname = %s, taskdescription=%s, deadline=%s, deadline_time=%s where id=%s", (taskname, taskdescription,deadline,deadline_time,tid))
+            cursor.execute("update user_ set taskname = %s, taskdescription=%s, deadline=%s, status='pending' where id=%s", (taskname, taskdescription,deadline,tid))
         conn.commit()
         flash('Edited successfully','success')
         return redirect(url_for("todo.dashboard"),302)
@@ -86,14 +86,14 @@ def sort():
     if request.method=="POST":
         sd=request.form.get('sd')
         ed=request.form.get('ed')
-        st=request.form.get('st')
-        et=request.form.get('et')
+        #st=request.form.get('st')
+        #et=request.form.get('et')
         uid=session.get("user_id")
         conn=db.get_db()
         cursor=conn.cursor()
-        cursor.execute(f"select u.id, u.taskname, u.taskdescription, u.deadline, u.deadline_time, u.status from user_ u WHERE deadline_time BETWEEN %s AND %s AND u.id IN (select u.id from user_ u, userlist l where u.deadline BETWEEN %s AND %s AND u.userid=l.id AND l.id={uid});",(st,et,sd,ed))
+        cursor.execute(f"select u.id, u.taskname, u.taskdescription, u.deadline, u.status from user_ u WHERE deadline BETWEEN %s AND %s AND u.id IN (select u.id from user_ u, userlist l where u.deadline BETWEEN %s AND %s AND u.userid=l.id AND l.id={uid});",(sd,ed,sd,ed))
         tasks=cursor.fetchall()
-        otpt=(f"{uid} sd = {st} \n ed={et} \n {tasks}")
+        otpt=(f"{uid} sd = {sd} \n ed={ed} \n {tasks}")
         cursor.execute(f"select l.name from userlist l;")
         name=cursor.fetchone()[0]
         return render_template('todo.html',tasks=tasks,name=name)
