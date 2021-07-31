@@ -11,7 +11,8 @@ def create_app(test_config=None):
     app = Flask("todo")
     app.config.from_mapping(
         DATABASE="todo")
-    app.config['SECRET_KEY'] = 'secret-key-goes-here'
+    app.config['DATABASE_URL'] = "postgres://fxbqpoixzfjldz:fa03d616c61ded685583bbd92a0c72eebe5afebf24f64695c4aa6380a506b95a@ec2-34-228-100-83.compute-1.amazonaws.com:5432/dbj5h9ssa9ti"
+    app.config['SECRET_KEY'] = 'j10a1s19w22a1n14t20h8'
     if test_config is not None:
         app.config.update(test_config)
 
