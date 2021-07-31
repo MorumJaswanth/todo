@@ -32,13 +32,14 @@
               {% if not current_user.is_authenticated %}
 			  <a class="nav-item nav-link" href="{{ url_for('auth.login') }}" class="navbar-item">Login</a>
 			  <a class="nav-item nav-link" href="{{ url_for('auth.signup') }}" class="navbar-item">Sign Up</a>
+			  <a class="nav-item nav-link" href="{{ url_for('auth.logout') }}" class="navbar-item">Logout</a>
                          {% endif %}
 			  {% if current_user.is_authenticated %}
               <a class="nav-item nav-link" href="{{ url_for('todo.change_settings') }}" class="navbar-item">Settings</a>
 			  {% endif %}
-              {% if current_user.is_authenticated %}
+              <!--{% if current_user.is_authenticated %}
               <a class="nav-item nav-link" href="{{ url_for('auth.logout') }}" class="navbar-item">Logout</a>
-			  {% endif %}
+			  {% endif %}-->
 			</div>
 		  </div>
                 </nav>
